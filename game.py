@@ -4,9 +4,10 @@ from random import randint
 
 class Game:
     figures = ('Paper', 'Scissors', 'Stone')
-    results = []
     player_score = 0
     computer_score = 0
+    player_figure = ''
+    computer_figure = ''
 
     def get_random_figure(self):
         figure = self.figures[randint(0, len(self.figures) - 1)]
@@ -25,11 +26,11 @@ class Game:
             self.chose_game_option()
 
     def play(self):
-        player_figure = self.chose_figure()
-        computer_figure = self.get_random_figure()
+        self.player_figure = self.chose_figure()
+        self.computer_figure = self.get_random_figure()
         print('Fight!!! \n')
-        print(f'Your: {player_figure} vs {computer_figure} : Computer \n')
-        self.who_win_turn()
+        print(f'Your: {self.player_figure} vs {self.computer_figure} : Computer \n')
+        self.who_win_round()
 
     def show_results(self):
         print('Your score:' + str(self.player_score))
@@ -38,23 +39,30 @@ class Game:
     def who_win_game(self):
         winner = ''
 
-        for score in self.results:
-            if score == 0:
-                self.player_score += 1
-            elif score == 1:
-                self.computer_score += 1
-
         if self.player_score > self.computer_score:
-            winner = 'You Won!!! Congratulations!!!'
+            winner = 'You Won!!! Congratulations!!!\n'
         elif self.computer_score > self.player_score:
-            winner = 'You Loose!!! :( Try next time.'
+            winner = 'You Loose!!! :( Try next time.\n'
         elif self.player_score == self.computer_score:
-            winner = 'It\'s Draw.'
+            winner = 'It\'s Draw.\n'
 
         print(winner)
 
-    def who_win_turn(self):
-        return ''
+    def who_win_round(self):
+        if self.player_figure == self.computer_figure:
+            print('It\'s draw!')
+        elif self.player_figure == self.figures[0] and self.computer_figure == self.figures[1]:
+            self.computer_win()
+        elif self.player_figure == self.figures[0] and self.computer_figure == self.figures[2]:
+            self.player_win()
+        elif self.player_figure == self.figures[1] and self.computer_figure == self.figures[0]:
+            self.player_win()
+        elif self.player_figure == self.figures[1] and self.computer_figure == self.figures[2]:
+            self.computer_win()
+        elif self.player_figure == self.figures[2] and self.computer_figure == self.figures[0]:
+            self.computer_win()
+        elif self.player_figure == self.figures[2] and self.computer_figure == self.figures[1]:
+            self.player_win()
 
     def chose_game_option(self):
         print('1. Play')
@@ -67,3 +75,11 @@ class Game:
             self.show_results()
         elif x == 3:
             sys.exit(self.who_win_game())
+
+    def player_win(self):
+        self.player_score += 1
+        print('You won this round!! :)\n')
+
+    def computer_win(self):
+        self.computer_score += 1
+        print('Computer won this round.\n')
